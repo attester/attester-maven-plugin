@@ -185,11 +185,11 @@ public abstract class RunATJSTestRunner extends RunNode {
         res.add("--config.coverage-reports.lcov-file");
         res.add(lcovCoverageReportFile.getAbsolutePath());
 
-        res.add("--config.test.aria-templates.bootstrap");
+        res.add("--config.tests.aria-templates.bootstrap");
         res.add(ariaTemplatesBootstrap);
 
-        addMultipleOptions(res, "--config.test.aria-templates.files.includes", ariaTemplatesClasspathsIncludes);
-        addMultipleOptions(res, "--config.test.aria-templates.files.excludes", ariaTemplatesClasspathsExcludes);
+        addMultipleOptions(res, "--config.tests.aria-templates.classpaths.includes", ariaTemplatesClasspathsIncludes);
+        addMultipleOptions(res, "--config.tests.aria-templates.classpaths.excludes", ariaTemplatesClasspathsExcludes);
 
         addExtraAtjstestrunnerOptions(res);
 
