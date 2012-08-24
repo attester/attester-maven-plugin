@@ -29,6 +29,9 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
 /**
+ * Runs a node.js command. An error is raised if the exit code is different from
+ * 0.
+ *
  * @goal node
  */
 public class RunNode extends AbstractMojo {
@@ -37,6 +40,8 @@ public class RunNode extends AbstractMojo {
     private static final String NODEJS_PATH_PROPERTY = "org.nodejs.node.path";
 
     /**
+     * Arguments to pass to the node.js process.
+     *
      * @parameter
      */
     public List<String> arguments = new LinkedList<String>();

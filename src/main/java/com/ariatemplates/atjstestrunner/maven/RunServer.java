@@ -18,6 +18,10 @@ package com.ariatemplates.atjstestrunner.maven;
 import java.util.List;
 
 /**
+ * Runs <a href="https://github.com/ariatemplates/atjstestrunner-nodejs#usage"
+ * >atjstestrunner</a> with the <code>--server-only</code> option. This is
+ * useful to run tests manually.
+ *
  * @goal run
  */
 public class RunServer extends RunATJSTestRunner {

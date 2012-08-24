@@ -43,10 +43,10 @@ import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.project.MavenProject;
 
 /**
- * This maven plugin extracts its zip dependencies in a temporary directory
- * named according to the artifact, so that they can easily be used. If a
- * dependency is already extracted, it is used instead of extracting once again.
- * 
+ * Extracts the zip dependencies of this plugin in a temporary directory named
+ * according to the artifact. If a dependency is already extracted, it is not
+ * extracted again.
+ *
  * @goal extract-dependencies
  */
 public class ArtifactExtractor extends AbstractMojo {
@@ -55,7 +55,7 @@ public class ArtifactExtractor extends AbstractMojo {
      * @parameter expression="${session}"
      * @readonly
      * @required
-     * 
+     *
      */
     protected MavenSession session;
 
@@ -63,7 +63,7 @@ public class ArtifactExtractor extends AbstractMojo {
      * @parameter expression="${project}"
      * @readonly
      * @required
-     * 
+     *
      */
     protected MavenProject project;
 

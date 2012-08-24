@@ -24,38 +24,70 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
 /**
+ * Runs <a href="https://github.com/ariatemplates/atjstestrunner-nodejs#usage"
+ * >atjstestrunner</a>. This usually executes tests in PhantomJS and generates
+ * reports.
+ *
  * @goal test
  * @phase test
  */
 public class RunTests extends RunATJSTestRunner {
 
     /**
+     * If true, the execution of this goal is skipped (it is bound to the
+     * maven.test.skip variable).
+     *
      * @parameter expression="${maven.test.skip}"
      */
     public boolean skip;
 
     /**
+     * If true, the execution of this goal is skipped (it is bound to the
+     * skipTests variable).
+     *
      * @parameter expression="${skipTests}"
      */
     public boolean skipTests;
 
     /**
+     * If true, errors during the tests (not including failures) will not make
+     * the build fail. (Passes <code>--ignore-errors</code> to <a
+     * href="https://github.com/ariatemplates/atjstestrunner-nodejs#usage"
+     * >atjstestrunner</a>).
+     *
      * @parameter expression="${maven.test.error.ignore}"
      */
     public boolean ignoreErrors;
 
     /**
+     * If true, failures (anticipated errors) during the tests will not make the
+     * build fail. (Passes <code>--ignore-failures</code> to <a
+     * href="https://github.com/ariatemplates/atjstestrunner-nodejs#usage"
+     * >atjstestrunner</a>).
+     *
      * @parameter expression="${maven.test.failure.ignore}"
      */
     public boolean ignoreFailures;
 
     /**
+     * Number of PhantomJS instances to start, to execute tests in parallel. <br/>
+     * (Passed through <code>--phantomjs-instances</code> to <a
+     * href="https://github.com/ariatemplates/atjstestrunner-nodejs#usage"
+     * >atjstestrunner</a>).
+     *
      * @parameter expression="${atjstestrunner.phantomJSInstances}"
      *            default-value=2
      */
     public int phantomjsInstances;
 
     /**
+     * Path to the PhantomJS executable. If not defined, and phantomjsInstances
+     * &gt; 0, PhantomJS is extracted from the the following maven artifact:
+     * <code>com.google.code.phantomjs:phantomjs:1.6.0:zip:win32-static</code> <br/>
+     * (Passed through <code>--phantomjs-path</code> to <a
+     * href="https://github.com/ariatemplates/atjstestrunner-nodejs#usage"
+     * >atjstestrunner</a>).
+     *
      * @parameter expression="${com.google.code.phantomjs.path}"
      */
     public File phantomjsPath;

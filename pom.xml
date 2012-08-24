@@ -3,11 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>atjstestrunner-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
-	<parent>
-		<artifactId>atjstestrunner</artifactId>
-		<groupId>com.ariatemplates.atjstestrunner</groupId>
-		<version>1.0-SNAPSHOT</version>
-	</parent>
+	<groupId>com.ariatemplates.atjstestrunner</groupId>
+	<version>1.0-SNAPSHOT</version>
+	<name>Aria Templates Javascript Test Runner Maven Plugin</name>
+	<url>http://ariatemplates.github.com/atjstestrunner-maven-plugin</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -56,6 +55,38 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<skipDeploy>true</skipDeploy>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.kohsuke</groupId>
+						<artifactId>doxia-module-markdown</artifactId>
+						<version>1.0</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>com.github.github</groupId>
+				<artifactId>site-maven-plugin</artifactId>
+				<version>0.7</version>
+				<executions>
+					<execution>
+						<phase>site-deploy</phase>
+						<goals>
+							<goal>site</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<message>Site for version ${project.version}</message>
+					<server>github</server>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>2.3.1</version>
 				<inherited>true</inherited>
@@ -70,7 +101,43 @@
 			</plugin>
 		</plugins>
 	</build>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-plugin-plugin</artifactId>
+				<version>2.5.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.5</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>dependencies</report>
+							<report>issue-tracking</report>
+							<report>license</report>
+							<report>scm</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/ariatemplates/atjstestrunner-maven-plugin/issues</url>
+	</issueManagement>
 	<scm>
+		<url>https://github.com/ariatemplates/atjstestrunner-maven-plugin</url>
 		<connection>scm:git:https://github.com/ariatemplates/atjstestrunner-maven-plugin.git</connection>
 	</scm>
 </project>
