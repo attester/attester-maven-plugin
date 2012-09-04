@@ -140,4 +140,8 @@
 		<url>https://github.com/ariatemplates/atjstestrunner-maven-plugin</url>
 		<connection>scm:git:https://github.com/ariatemplates/atjstestrunner-maven-plugin.git</connection>
 	</scm>
+	<organization>
+		<name>Amadeus s.a.s</name>
+		<url>http://www.amadeus.com/</url>
+	</organization>
 </project>
