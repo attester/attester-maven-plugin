@@ -1,0 +1,79 @@
+<h3>Usage</h3>
+
+<em>Note that atjstestrunner-maven-plugin is not yet included in the Maven central repository. Therefore, before being
+able to use it, you have to build and install it from sources. Please check the [build section](build.html) for more information.</em>
+
+This page describes a simple way to use this plugin.
+
+<h4>Directory layout</h4>
+
+Here is the recommended directory layout, which allows most configuration parameters to keep their default values:
+
+<pre>
+.
+|-- pom.xml
+|-- src
+|   |-- main
+|   |   `-- webapp
+|   |       |-- MyMainFiles.js        // Put here the main .js files
+|   |       `-- MyOtherMainFile.js    // of your application
+|   `-- test
+|       `-- webapp
+|           |-- MainTestSuite.js      // Put here the test-related .js files
+|           `-- MyTestCase.js
+`-- target
+    `-- MyProject-1.0-SNAPSHOT        // Corresponds to the \${project.build.finalName} variable
+        |-- aria
+        |   |-- bootstrap.js          // The correct Aria Templates version should be deployed
+        |   `-- ...                   // here (by some configuration in the pom.xml)
+        |-- other
+        |   `-- MyOtherLib.js         // Any other library used by the project should be deployed
+        |                             // somewhere in the \${project.build.finalName} directory
+        |
+        |-- MyMainFiles.js            // The main .js files of your application are also
+        `-- MyOtherMainFile.js        // usually deployed here, but, by default, they will
+                                      // not be used from here for the tests
+                                      // (but from the src/main/webapp directory)
+</pre>
+
+<h4>Simple configuration</h4>
+
+To run [Aria Templates](http://ariatemplates.com) tests automatically during the test phase of the build, add the following lines in the ``pom.xml`` file:
+
+<pre class="prettyprint lang-xml">
+	&lt;project&gt;
+		...
+		&lt;build&gt;
+			&lt;plugins&gt;
+				&lt;plugin&gt;
+					&lt;groupId&gt;${project.groupId}&lt;/groupId&gt;
+					&lt;artifactId&gt;${project.artifactId}&lt;/artifactId&gt;
+					&lt;version&gt;${project.version}&lt;/version&gt;
+					&lt;configuration&gt;
+						&lt;!-- In the following line, replace /aria/bootstrap.js with the name of the Aria Templates main .js file --&gt;
+						&lt;ariaTemplatesBootstrap&gt;/aria/bootstrap.js&lt;/ariaTemplatesBootstrap&gt;
+						&lt;ariaTemplatesClasspathsIncludes&gt;
+							&lt;!-- Specify below the classpaths of the set of test suites or test cases to run --&gt;
+							&lt;item&gt;MainTestSuite&lt;/item&gt;
+							&lt;!-- If all the tests you want to run are included in a single test suite
+								called MainTestSuite, you can remove the whole ariaTemplatesClasspathsIncludes configuration
+								as it is the default value --&gt;
+						&lt;/ariaTemplatesClasspathsIncludes&gt;
+					&lt;/configuration&gt;
+					&lt;executions&gt;
+						&lt;execution&gt;
+							&lt;goals&gt;
+								&lt;goal&gt;test&lt;/goal&gt;
+							&lt;/goals&gt;
+						&lt;/execution&gt;
+					&lt;/executions&gt;
+	  			&lt;/plugin&gt;
+	  			...
+			&lt;/plugins&gt;
+		&lt;/build&gt;
+		...
+	&lt;/project&gt;
+</pre>
+
+To run the tests, you can now execute:
+	mvn test

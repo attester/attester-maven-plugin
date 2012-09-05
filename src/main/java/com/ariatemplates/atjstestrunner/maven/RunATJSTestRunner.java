@@ -32,12 +32,47 @@ public abstract class RunATJSTestRunner extends RunNode {
      * href="https://github.com/ariatemplates/atjstestrunner-nodejs#usage"
      * >here</a>.
      *
+     * Note that most options can be configured directly from the pom.xml,
+     * without the need for an external configuration file.
+     *
      * @parameter
      */
     public File configFile;
 
     /**
-     * Directory to use as the root of the web server. (Passed through
+     * First directory to serve as the root of the web server. This directory is
+     * usually the one containing Javascript tests. (Passed through
+     * <code>--config.resources./</code> to <a
+     * href="https://github.com/ariatemplates/atjstestrunner-nodejs#usage"
+     * >atjstestrunner</a>)
+     *
+     * @parameter expression="${basedir}/src/test/webapp"
+     */
+    public File testSourceDirectory;
+
+    /**
+     * Second directory to serve as the root of the web server. In case a file
+     * is requested and not present in <a
+     * href="#testSourceDirectory">testSourceDirectory</a>, it is looked for in
+     * this directory. This directory is usually the one containing the main
+     * Javascript files of the application. If it exists, it is also used as the
+     * default value for the <a
+     * href="#coverageRootDirectory">coverageRootDirectory</a> option. (Passed
+     * through <code>--config.resources./</code> to <a
+     * href="https://github.com/ariatemplates/atjstestrunner-nodejs#usage"
+     * >atjstestrunner</a>)
+     *
+     * @parameter expression="${basedir}/src/main/webapp"
+     */
+    public File warSourceDirectory;
+
+    /**
+     * Third directory to serve as the root of the web server. In case a file is
+     * requested and not present in either <a
+     * href="#warSourceDirectory">warSourceDirectory</a> or <a
+     * href="#testSourceDirectory">testSourceDirectory</a>, it is looked for in
+     * this directory. This directory usually contains any external library
+     * needed by the application. (Passed through
      * <code>--config.resources./</code> to <a
      * href="https://github.com/ariatemplates/atjstestrunner-nodejs#usage"
      * >atjstestrunner</a>)
@@ -46,6 +81,55 @@ public abstract class RunATJSTestRunner extends RunNode {
      *            expression="${project.build.directory}/${project.build.finalName}"
      */
     public File webappDirectory;
+
+    /**
+     * Root directory for code coverage instrumentation. Files inside this
+     * directory and matching one of the <a
+     * href="#coverageIncludes">coverageIncludes</a> patterns and not matching
+     * any <a href="#coverageExcludes">coverageExcludes</a> patterns will be
+     * instrumented for code coverage when requested to the web server. Note
+     * that for code coverage instrumentation to be effective, this directory or
+     * one of its parents has to be configured to be served by the web server
+     * (e.g. through <a href="#testSourceDirectory">testSourceDirectory</a>, <a
+     * href="#warSourceDirectory">warSourceDirectory</a> or <a
+     * href="#webappDirectory">webappDirectory</a>). The default value for this
+     * parameter is the value of the <a
+     * href="#warSourceDirectory">warSourceDirectory</a> parameter. (Passed
+     * through <code>--config.coverage.files.rootDirectory</code> to <a
+     * href="https://github.com/ariatemplates/atjstestrunner-nodejs#usage"
+     * >atjstestrunner</a>)
+     *
+     * @parameter
+     */
+    public File coverageRootDirectory;
+
+    /**
+     * List of file patterns to be included for code coverage instrumentation.
+     * See <a href="#coverageRootDirectory">coverageRootDirectory</a> for more
+     * information. This property is ignored if <a
+     * href="#coverageRootDirectory">coverageRootDirectory</a> does not exist or
+     * is not a directory. (Passed through
+     * <code>--config.coverage.files.includes</code> to <a
+     * href="https://github.com/ariatemplates/atjstestrunner-nodejs#usage"
+     * >atjstestrunner</a>)
+     *
+     * @parameter
+     */
+    public String[] coverageIncludes = new String[] { "**/*.js" };
+
+    /**
+     * List of file patterns to be excluded from code coverage instrumentation.
+     * See <a href="#coverageRootDirectory">coverageRootDirectory</a> for more
+     * information. This property is ignored if <a
+     * href="#coverageRootDirectory">coverageRootDirectory</a> does not exist or
+     * is not a directory. (Passed through
+     * <code>--config.coverage.files.excludes</code> to <a
+     * href="https://github.com/ariatemplates/atjstestrunner-nodejs#usage"
+     * >atjstestrunner</a>)
+     *
+     * @parameter
+     */
+    public String[] coverageExcludes;
 
     /**
      * Aria Templates bootstrap file. (Passed through
@@ -230,8 +314,31 @@ public abstract class RunATJSTestRunner extends RunNode {
             res.add("--no-colors");
         }
 
-        res.add("--config.resources./");
-        res.add(webappDirectory.getAbsolutePath());
+        if (testSourceDirectory.isDirectory()) {
+            res.add("--config.resources./");
+            res.add(testSourceDirectory.getAbsolutePath());
+        }
+
+        if (warSourceDirectory.isDirectory()) {
+            res.add("--config.resources./");
+            res.add(warSourceDirectory.getAbsolutePath());
+            if (coverageRootDirectory == null) {
+                coverageRootDirectory = warSourceDirectory;
+            }
+        }
+
+        if (webappDirectory.isDirectory()) {
+            res.add("--config.resources./");
+            res.add(webappDirectory.getAbsolutePath());
+        }
+
+        if (coverageRootDirectory != null && coverageRootDirectory.isDirectory()) {
+            res.add("--config.coverage.files.rootDirectory");
+            res.add(coverageRootDirectory.getAbsolutePath());
+
+            addMultipleOptions(res, "--config.coverage.files.includes", coverageIncludes);
+            addMultipleOptions(res, "--config.coverage.files.excludes", coverageExcludes);
+        }
 
         res.add("--config.test-reports.xml-directory");
         res.add(xmlReportsDirectory.getAbsolutePath());
