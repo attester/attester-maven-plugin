@@ -7,8 +7,17 @@
 	<version>1.0-SNAPSHOT</version>
 	<properties>
 		<ariatemplates.version>1.2.0</ariatemplates.version>
+
+		<!-- The following line make sure Sonar is configured for Javascript analysis.
+			You can remove it if you don't use Sonar (mvn sonar:sonar) -->
+		<sonar.language>js</sonar.language>
 	</properties>
 	<build>
+		<!-- The following two lines make sure Sonar knows where to look for Javascript
+			files. You can remove them if you don't use Sonar (mvn sonar:sonar) -->
+		<sourceDirectory>${basedir}/src/main/webapp</sourceDirectory>
+		<testSourceDirectory>${basedir}/src/test/webapp/test</testSourceDirectory>
+
 		<plugins>
 			<plugin>
 				<!-- This plugin installs the Aria Templates framework. -->
@@ -38,6 +47,7 @@
 					</execution>
 				</executions>
 			</plugin>
+
 			<plugin>
 				<!-- This plugin runs the tests. -->
 				<groupId>com.ariatemplates.atjstestrunner</groupId>
