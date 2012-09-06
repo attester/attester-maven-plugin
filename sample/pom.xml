@@ -8,7 +8,7 @@
 	<properties>
 		<ariatemplates.version>1.2.0</ariatemplates.version>
 
-		<!-- The following line make sure Sonar is configured for Javascript analysis.
+		<!-- The following line makes sure Sonar is configured for Javascript analysis.
 			You can remove it if you don't use Sonar (mvn sonar:sonar) -->
 		<sonar.language>js</sonar.language>
 	</properties>
