@@ -1,0 +1,59 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>atjstestrunner-maven-plugin-sample</artifactId>
+	<packaging>war</packaging>
+	<groupId>com.ariatemplates.atjstestrunner</groupId>
+	<version>1.0-SNAPSHOT</version>
+	<properties>
+		<ariatemplates.version>1.2.0</ariatemplates.version>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<!-- This plugin installs the Aria Templates framework. -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>download-ariatemplates</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<get
+									src="http://ariatemplates.com/download/builds/ariatemplates-${ariatemplates.version}.zip"
+									dest="${project.build.directory}/ariatemplates.zip" />
+								<unzip src="${project.build.directory}/ariatemplates.zip"
+									dest="${project.build.directory}/${project.build.finalName}">
+									<patternset>
+										<include name="aria/**" />
+									</patternset>
+								</unzip>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<!-- This plugin runs the tests. -->
+				<groupId>com.ariatemplates.atjstestrunner</groupId>
+				<artifactId>atjstestrunner-maven-plugin</artifactId>
+				<version>1.0-SNAPSHOT</version>
+				<configuration>
+					<ariaTemplatesBootstrap>/aria/ariatemplates-${ariatemplates.version}.js</ariaTemplatesBootstrap>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
