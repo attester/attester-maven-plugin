@@ -1,9 +1,11 @@
 <h3>Usage</h3>
 
+This page describes how to use this plugin in your project.
+If you need more details, or if you want to easily try this plugin, you can have a look to the
+[sample project](https://github.com/ariatemplates/atjstestrunner-maven-plugin/tree/master/sample) which closely follows this documentation.
+
 <em>Note that atjstestrunner-maven-plugin is not yet included in the Maven central repository. Therefore, before being
 able to use it, you have to build and install it from sources. Please check the [build section](build.html) for more information.</em>
-
-This page describes a simple way to use this plugin.
 
 <h4>Directory layout</h4>
 
@@ -21,8 +23,8 @@ Here is the recommended directory layout, which allows most configuration parame
 |       `-- webapp
 |           |-- MainTestSuite.js      // Put here the test-related .js files
 |           `-- MyTestCase.js
-`-- target
-    `-- MyProject-1.0-SNAPSHOT        // Corresponds to the \${project.build.finalName} variable
+`-- target                            // The target directory is created during the build.
+    `-- MyProject-1.0-SNAPSHOT        // This directory corresponds to the \${project.build.finalName} variable
         |-- aria
         |   |-- bootstrap.js          // The correct Aria Templates version should be deployed
         |   `-- ...                   // here (by some configuration in the pom.xml)
@@ -76,4 +78,14 @@ To run [Aria Templates](http://ariatemplates.com) tests automatically during the
 </pre>
 
 To run the tests, you can now execute:
+
 	mvn test
+
+To run tests manually, or check code coverage results, you can run:
+
+	mvn atjstestrunner:run
+
+This starts a web server and displays the URL to access it.
+You can use this URL to display code coverage results from the previous test campaign (launched with ``mvn test``).
+You can also use it to run some tests manually with the Aria Templates test runner (by appending ``/aria/tester/index.html`` to the url).
+
