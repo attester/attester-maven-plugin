@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/DECORATION/1.3.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/DECORATION/1.3.0 http://maven.apache.org/xsd/decoration-1.3.0.xsd"
-	name="atjstestrunner-maven-plugin">
+	name="attester-maven-plugin">
 	<skin>
 		<groupId>org.apache.maven.skins</groupId>
 		<artifactId>maven-fluido-skin</artifactId>
@@ -12,7 +12,7 @@
 		<fluidoSkin>
 			<sideBarEnabled>true</sideBarEnabled>
 			<gitHub>
-				<projectId>ariatemplates/atjstestrunner-maven-plugin</projectId>
+				<projectId>ariatemplates/attester-maven-plugin</projectId>
 				<ribbonOrientation>right</ribbonOrientation>
 				<ribbonColor>black</ribbonColor>
 			</gitHub>
@@ -21,10 +21,10 @@
 	<body>
 		<links>
 			<item name="Aria Templates" href="http://ariatemplates.com" />
-			<item name="atjstestrunner-nodejs"
-				href="http://github.com/ariatemplates/atjstestrunner-nodejs" />
+			<item name="attester"
+				href="http://github.com/ariatemplates/attester" />
 			<item name="This project on GitHub"
-				href="http://github.com/ariatemplates/atjstestrunner-maven-plugin" />
+				href="http://github.com/ariatemplates/attester-maven-plugin" />
 		</links>
 		<menu name="Overview">
 			<item name="Introduction" href="index.html" />

@@ -2,9 +2,9 @@
 
 This page describes how to use this plugin in your project.
 If you need more details, or if you want to easily try this plugin, you can have a look to the
-[sample project](https://github.com/ariatemplates/atjstestrunner-maven-plugin/tree/master/sample) which closely follows this documentation.
+[sample project](https://github.com/ariatemplates/attester-maven-plugin/tree/master/sample) which closely follows this documentation.
 
-<em>Note that atjstestrunner-maven-plugin is not yet included in the Maven central repository. Therefore, before being
+<em>Note that attester-maven-plugin is not yet included in the Maven central repository. Therefore, before being
 able to use it, you have to build and install it from sources. Please check the [build section](build.html) for more information.</em>
 
 <h4>Directory layout</h4>
@@ -83,7 +83,7 @@ To run the tests, you can now execute:
 
 To run tests manually, or check code coverage results, you can run:
 
-	mvn atjstestrunner:run
+	mvn attester:run
 
 This starts a web server and displays the URL to access it.
 You can use this URL to display code coverage results from the previous test campaign (launched with ``mvn test``).

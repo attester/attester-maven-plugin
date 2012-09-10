@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>atjstestrunner-maven-plugin</artifactId>
+	<artifactId>attester-maven-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
-	<groupId>com.ariatemplates.atjstestrunner</groupId>
+	<groupId>com.ariatemplates.attester</groupId>
 	<version>1.0-SNAPSHOT</version>
 	<name>Aria Templates Javascript Test Runner Maven Plugin</name>
-	<url>http://ariatemplates.github.com/atjstestrunner-maven-plugin</url>
+	<url>http://ariatemplates.github.com/attester-maven-plugin</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -27,8 +27,8 @@
 			<version>2.2</version>
 		</dependency>
 		<dependency>
-			<groupId>com.ariatemplates.atjstestrunner</groupId>
-			<artifactId>atjstestrunner-nodejs</artifactId>
+			<groupId>com.ariatemplates.attester</groupId>
+			<artifactId>attester</artifactId>
 			<version>${project.version}</version>
 			<classifier>project</classifier>
 			<type>zip</type>
@@ -134,11 +134,11 @@
 	</reporting>
 	<issueManagement>
 		<system>GitHub</system>
-		<url>https://github.com/ariatemplates/atjstestrunner-maven-plugin/issues</url>
+		<url>https://github.com/ariatemplates/attester-maven-plugin/issues</url>
 	</issueManagement>
 	<scm>
-		<url>https://github.com/ariatemplates/atjstestrunner-maven-plugin</url>
-		<connection>scm:git:https://github.com/ariatemplates/atjstestrunner-maven-plugin.git</connection>
+		<url>https://github.com/ariatemplates/attester-maven-plugin</url>
+		<connection>scm:git:https://github.com/ariatemplates/attester-maven-plugin.git</connection>
 	</scm>
 	<organization>
 		<name>Amadeus s.a.s</name>
