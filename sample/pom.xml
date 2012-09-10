@@ -6,7 +6,7 @@
 	<groupId>com.ariatemplates.atjstestrunner</groupId>
 	<version>1.0-SNAPSHOT</version>
 	<properties>
-		<ariatemplates.version>1.2.0</ariatemplates.version>
+		<ariatemplates.version>1.2.4</ariatemplates.version>
 
 		<!-- The following line makes sure Sonar is configured for Javascript analysis.
 			You can remove it if you don't use Sonar (mvn sonar:sonar) -->
@@ -34,7 +34,7 @@
 						<configuration>
 							<target>
 								<get
-									src="http://ariatemplates.com/download/builds/ariatemplates-${ariatemplates.version}.zip"
+									src="http://ariatemplates.com/builds/ariatemplates-dev-${ariatemplates.version}.zip"
 									dest="${project.build.directory}/ariatemplates.zip" />
 								<unzip src="${project.build.directory}/ariatemplates.zip"
 									dest="${project.build.directory}/${project.build.finalName}">
@@ -54,7 +54,7 @@
 				<artifactId>atjstestrunner-maven-plugin</artifactId>
 				<version>1.0-SNAPSHOT</version>
 				<configuration>
-					<ariaTemplatesBootstrap>/aria/ariatemplates-${ariatemplates.version}.js</ariaTemplatesBootstrap>
+					<ariaTemplatesBootstrap>/aria/bootstrap.js</ariaTemplatesBootstrap>
 				</configuration>
 				<executions>
 					<execution>
