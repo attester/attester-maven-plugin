@@ -1,5 +1,5 @@
-Aria Templates Javascript Test Runner - Maven Plugin
-====================================================
+Attester - Maven Plugin
+=======================
 
 *attester-maven-plugin* is a small [Maven](http://maven.apache.org/) plugin which makes it easy to integrate
 [attester](https://github.com/ariatemplates/attester) in a maven project.
