@@ -134,6 +134,15 @@ public abstract class RunAttester extends RunNode {
     public String ariaTemplatesBootstrap;
 
     /**
+     * Aria Templates extra scripts to be included before running each test.
+     * (Passed through <code>--config.tests.aria-templates.extraScripts</code> to
+     * <a href="https://github.com/ariatemplates/attester#usage" >attester</a>)
+     *
+     * @parameter
+     */
+    public String[] ariaTemplatesExtraScripts;
+
+    /**
      * Aria Templates single test classpath to include. If this parameter is
      * defined, ariaTemplatesClasspathsIncludes and
      * ariaTemplatesClasspathsExcludes are ignored. It allows to easily run a
@@ -360,6 +369,8 @@ public abstract class RunAttester extends RunNode {
             addMultipleOptions(res, "--config.tests.aria-templates.classpaths.includes", ariaTemplatesClasspathsIncludes);
             addMultipleOptions(res, "--config.tests.aria-templates.classpaths.excludes", ariaTemplatesClasspathsExcludes);
         }
+
+        addMultipleOptions(res, "--config.tests.aria-templates.extraScripts", ariaTemplatesExtraScripts);
 
         addExtraAttesterOptions(res);
 
