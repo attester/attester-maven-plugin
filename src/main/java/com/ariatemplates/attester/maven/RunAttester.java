@@ -212,7 +212,7 @@ public abstract class RunAttester extends RunNode {
      * Port for the internal web server. (Passed through <code>--port</code> to
      * <a href="https://github.com/ariatemplates/attester#usage" >attester</a>)
      *
-     * @parameter
+     * @parameter expression="${attester.port}"
      */
     public Integer port;
 
@@ -220,7 +220,7 @@ public abstract class RunAttester extends RunNode {
      * Enables or disables colors. (If false, passes <code>--no-colors</code> to
      * <a href="https://github.com/ariatemplates/attester#usage" >attester</a>)
      *
-     * @parameter
+     * @parameter expression="${attester.colors}"
      */
     public boolean colors = false;
 
