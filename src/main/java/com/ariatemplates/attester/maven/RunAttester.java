@@ -129,7 +129,7 @@ public abstract class RunAttester extends RunNode {
      * <code>--config.tests.aria-templates.bootstrap</code> to <a
      * href="https://github.com/ariatemplates/attester#usage" >attester</a>)
      *
-     * @parameter expression="aria/aria-templates-${at.version}.js"
+     * @parameter expression="/aria/aria-templates-${at.version}.js"
      */
     public String ariaTemplatesBootstrap;
 
