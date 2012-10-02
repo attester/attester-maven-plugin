@@ -134,6 +134,18 @@ public abstract class RunAttester extends RunNode {
     public String ariaTemplatesBootstrap;
 
     /**
+     * Aria Templates single test classpath to include. If this parameter is
+     * defined, ariaTemplatesClasspathsIncludes and
+     * ariaTemplatesClasspathsExcludes are ignored. It allows to easily run a
+     * single test from the command line. (Passed through
+     * <code>--config.tests.aria-templates.classpaths.includes</code> to <a
+     * href="https://github.com/ariatemplates/attester#usage" >attester</a>)
+     *
+     * @parameter expression="${attester.ariaTemplatesClasspath}"
+     */
+    public String ariaTemplatesClasspath;
+
+    /**
      * Aria Templates test classpaths to include. (Passed through
      * <code>--config.tests.aria-templates.classpaths.includes</code> to <a
      * href="https://github.com/ariatemplates/attester#usage" >attester</a>)
@@ -341,8 +353,13 @@ public abstract class RunAttester extends RunNode {
         res.add("--config.tests.aria-templates.bootstrap");
         res.add(ariaTemplatesBootstrap);
 
-        addMultipleOptions(res, "--config.tests.aria-templates.classpaths.includes", ariaTemplatesClasspathsIncludes);
-        addMultipleOptions(res, "--config.tests.aria-templates.classpaths.excludes", ariaTemplatesClasspathsExcludes);
+        if (ariaTemplatesClasspath != null) {
+            res.add("--config.tests.aria-templates.classpaths.includes");
+            res.add(ariaTemplatesClasspath);
+        } else {
+            addMultipleOptions(res, "--config.tests.aria-templates.classpaths.includes", ariaTemplatesClasspathsIncludes);
+            addMultipleOptions(res, "--config.tests.aria-templates.classpaths.excludes", ariaTemplatesClasspathsExcludes);
+        }
 
         addExtraAttesterOptions(res);
 
