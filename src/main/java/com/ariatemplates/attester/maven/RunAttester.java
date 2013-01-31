@@ -318,12 +318,12 @@ public abstract class RunAttester extends RunNode {
             res.add("--no-colors");
         }
 
-        if (testSourceDirectory.isDirectory()) {
+        if (testSourceDirectory != null && testSourceDirectory.isDirectory()) {
             res.add("--config.resources./");
             res.add(testSourceDirectory.getAbsolutePath());
         }
 
-        if (warSourceDirectory.isDirectory()) {
+        if (warSourceDirectory != null && warSourceDirectory.isDirectory()) {
             res.add("--config.resources./");
             res.add(warSourceDirectory.getAbsolutePath());
             if (coverageRootDirectory == null) {
@@ -331,7 +331,7 @@ public abstract class RunAttester extends RunNode {
             }
         }
 
-        if (webappDirectory.isDirectory()) {
+        if (webappDirectory != null && webappDirectory.isDirectory()) {
             res.add("--config.resources./");
             res.add(webappDirectory.getAbsolutePath());
         }

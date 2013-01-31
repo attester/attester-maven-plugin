@@ -86,11 +86,13 @@ public class RunNode extends AbstractMojo {
     }
 
     protected void closeNodeProcess() {
-        try {
-            nodeProcess.exitValue();
-        } catch (IllegalThreadStateException e) {
-            nodeProcess.destroy();
-            System.out.println("Terminated the node process.");
+        if (nodeProcess != null) {
+            try {
+                nodeProcess.exitValue();
+            } catch (IllegalThreadStateException e) {
+                nodeProcess.destroy();
+                System.out.println("Terminated the node process.");
+            }
         }
     }
 
