@@ -248,7 +248,6 @@ public abstract class RunAttester extends RunNode {
     private static final String PATH_IN_ATTESTER_DIRECTORY = "bin" + File.separator + "attester.js";
 
     protected File attesterJsMainFile;
-    protected File phantomjsExecutable;
 
     public static Dependency getAttesterDependency() {
         Dependency dependency = new Dependency();

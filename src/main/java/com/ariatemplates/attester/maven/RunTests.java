@@ -19,7 +19,9 @@ import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
 
-import org.apache.maven.model.Dependency;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.artifact.DefaultArtifact;
+import org.apache.maven.artifact.handler.DefaultArtifactHandler;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
@@ -77,8 +79,8 @@ public class RunTests extends RunAttester {
 
     /**
      * Path to the PhantomJS executable. If not defined, and phantomjsInstances
-     * &gt; 0, PhantomJS is extracted from the the following maven artifact:
-     * <code>com.google.code.phantomjs:phantomjs:1.6.0:zip:win32-static</code> <br/>
+     * &gt; 0, PhantomJS is used from the the following maven artifact:
+     * <code>com.google.code.phantomjs:phantomjs:1.9.0:exe:win32</code> <br/>
      * (Passed through <code>--phantomjs-path</code> to <a
      * href="https://github.com/ariatemplates/attester#usage">attester</a>).
      *
@@ -100,9 +102,6 @@ public class RunTests extends RunAttester {
             getLog().info("Skipping tests.");
             return;
         }
-        if (phantomjsInstances > 0) {
-            extractPhantomJS();
-        }
         super.execute();
     }
 
@@ -121,8 +120,9 @@ public class RunTests extends RunAttester {
             list.add("--ignore-failures");
         }
         if (phantomjsInstances > 0) {
+            findPhantomjs();
             list.add("--phantomjs-path");
-            list.add(phantomjsExecutable.getAbsolutePath());
+            list.add(phantomjsPath.getAbsolutePath());
         }
 
         list.add("--phantomjs-instances");
@@ -131,22 +131,12 @@ public class RunTests extends RunAttester {
         super.addExtraAttesterOptions(list);
     }
 
-    protected void extractPhantomJS() {
-        Dependency phantomJSdependency = getPhantomJSDependency();
-        // String directoryInZip = phantomJSdependency.getArtifactId() + "-" +
-        // phantomJSdependency.getVersion() ;
-        String directoryInZip = phantomJSdependency.getArtifactId() + "-1.6.1";
-        phantomjsExecutable = extractDependency(phantomjsPath, phantomJSdependency, "", directoryInZip + File.separator + "phantomjs.exe");
+    protected void findPhantomjs() {
+        if (phantomjsPath == null) {
+            Artifact phantomjsArtifact = new DefaultArtifact("com.google.code.phantomjs", "phantomjs", "1.9.0", "runtime", "exe", "win32",
+                    new DefaultArtifactHandler("exe"));
+            phantomjsArtifact = session.getLocalRepository().find(phantomjsArtifact);
+            phantomjsPath = phantomjsArtifact.getFile();
+        }
     }
-
-    public static Dependency getPhantomJSDependency() {
-        Dependency dependency = new Dependency();
-        dependency.setGroupId("com.google.code.phantomjs");
-        dependency.setArtifactId("phantomjs");
-        dependency.setVersion("1.6.0");
-        dependency.setClassifier("win32-static");
-        dependency.setType("zip");
-        return dependency;
-    }
-
 }

@@ -15,9 +15,9 @@
 
 package com.ariatemplates.attester.maven;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Vector;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DefaultArtifact;
@@ -37,7 +37,6 @@ import org.apache.maven.project.MavenProject;
 public class RunNode extends AbstractMojo {
 
     private static final String START_FAILED = "Failed to start node.js.\nThe following executable was used: %s";
-    private static final String NODEJS_PATH_PROPERTY = "org.nodejs.node.path";
 
     /**
      * Arguments to pass to the node.js process.
@@ -59,6 +58,15 @@ public class RunNode extends AbstractMojo {
      * @required
      */
     protected MavenProject project;
+
+    /**
+     * Path to the node.js executable. If not defined, node.js is used from the
+     * the following maven artifact:
+     * <code>org.nodejs:node:0.8.22:exe:win32</code><br/>
+     *
+     * @parameter expression="${org.nodejs.node.path}"
+     */
+    public File nodejsPath;
 
     protected Process nodeProcess;
 
@@ -96,19 +104,18 @@ public class RunNode extends AbstractMojo {
         }
     }
 
-    protected String getNodeExecutable() {
-        String nodeJsPath = System.getProperty(NODEJS_PATH_PROPERTY);
-        if (nodeJsPath == null) {
-            Artifact nodeArtifact = new DefaultArtifact("org.nodejs", "node", "0.8.3", "runtime", "exe", "win32", new DefaultArtifactHandler("exe"));
+    protected void findNodeExecutable() {
+        if (nodejsPath == null) {
+            Artifact nodeArtifact = new DefaultArtifact("org.nodejs", "node", "0.8.22", "runtime", "exe", "win32", new DefaultArtifactHandler("exe"));
             nodeArtifact = session.getLocalRepository().find(nodeArtifact);
-            nodeJsPath = nodeArtifact.getFile().getAbsolutePath();
+            nodejsPath = nodeArtifact.getFile();
         }
-        return nodeJsPath;
     }
 
     protected void createNodeProcess() {
+        findNodeExecutable();
+        String nodeExecutable = nodejsPath.getAbsolutePath();
         List<String> nodeArguments = getNodeArguments();
-        String nodeExecutable = getNodeExecutable();
         nodeArguments.add(0, nodeExecutable);
         getLog().info(String.format("Starting node.js: %s", nodeArguments.toString()));
         try {
