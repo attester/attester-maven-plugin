@@ -4,7 +4,7 @@
 	<artifactId>attester-maven-plugin-sample</artifactId>
 	<packaging>war</packaging>
 	<groupId>com.ariatemplates.attester</groupId>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.0.2</version>
 	<properties>
 		<ariatemplates.version>1.3.6</ariatemplates.version>
 
@@ -52,7 +52,7 @@
 				<!-- This plugin runs the tests. -->
 				<groupId>com.ariatemplates.attester</groupId>
 				<artifactId>attester-maven-plugin</artifactId>
-				<version>1.0.1-SNAPSHOT</version>
+				<version>1.0.2</version>
 				<configuration>
 					<ariaTemplatesBootstrap>/aria/ariatemplates-${ariatemplates.version}.js</ariaTemplatesBootstrap>
 				</configuration>
