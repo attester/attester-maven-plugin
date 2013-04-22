@@ -91,7 +91,6 @@
 			<activation>
 				<os>
 					<family>windows</family>
-					<arch>x86</arch>
 				</os>
 			</activation>
 			<dependencies>
