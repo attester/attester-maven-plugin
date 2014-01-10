@@ -55,7 +55,7 @@
 			<plugin>
 				<groupId>com.github.github</groupId>
 				<artifactId>site-maven-plugin</artifactId>
-				<version>0.7</version>
+				<version>0.8</version>
 				<executions>
 					<execution>
 						<phase>site-deploy</phase>
@@ -146,11 +146,11 @@
 	</reporting>
 	<issueManagement>
 		<system>GitHub</system>
-		<url>https://github.com/ariatemplates/attester-maven-plugin/issues</url>
+		<url>https://github.com/attester/attester-maven-plugin/issues</url>
 	</issueManagement>
 	<scm>
-		<url>https://github.com/ariatemplates/attester-maven-plugin</url>
-		<connection>scm:git:https://github.com/ariatemplates/attester-maven-plugin.git</connection>
+		<url>https://github.com/attester/attester-maven-plugin</url>
+		<connection>scm:git:https://github.com/attester/attester-maven-plugin.git</connection>
 	</scm>
 	<organization>
 		<name>Amadeus s.a.s</name>
