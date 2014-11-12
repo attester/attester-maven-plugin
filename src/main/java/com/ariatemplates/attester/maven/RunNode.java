@@ -62,7 +62,7 @@ public class RunNode extends AbstractMojo {
     /**
      * Path to the node.js executable. If not defined, node.js is used from the
      * the following maven artifact:
-     * <code>org.nodejs:node:0.8.22:exe:win32</code><br/>
+     * <code>org.nodejs:node:0.10.32:exe:win32</code><br/>
      *
      * @parameter expression="${org.nodejs.node.path}"
      */
@@ -106,7 +106,7 @@ public class RunNode extends AbstractMojo {
 
     protected void findNodeExecutable() {
         if (nodejsPath == null) {
-            Artifact nodeArtifact = new DefaultArtifact("org.nodejs", "node", "0.8.22", "runtime", "exe", "win32", new DefaultArtifactHandler("exe"));
+            Artifact nodeArtifact = new DefaultArtifact("org.nodejs", "node", "0.10.32", "runtime", "exe", "win32", new DefaultArtifactHandler("exe"));
             nodeArtifact = session.getLocalRepository().find(nodeArtifact);
             nodejsPath = nodeArtifact.getFile();
         }
