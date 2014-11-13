@@ -6,7 +6,7 @@
 	<groupId>com.ariatemplates.attester</groupId>
 	<version>2.0.1</version>
 	<name>Attester Maven Plugin</name>
-	<url>http://ariatemplates.github.com/attester-maven-plugin</url>
+	<url>http://attester.github.io/attester-maven-plugin</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -55,7 +55,7 @@
 			<plugin>
 				<groupId>com.github.github</groupId>
 				<artifactId>site-maven-plugin</artifactId>
-				<version>0.8</version>
+				<version>0.10</version>
 				<executions>
 					<execution>
 						<phase>site-deploy</phase>
