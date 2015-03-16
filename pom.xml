@@ -105,7 +105,7 @@
 				<dependency>
 					<groupId>com.google.code.phantomjs</groupId>
 					<artifactId>phantomjs</artifactId>
-					<version>1.9.0</version>
+					<version>1.9.7</version>
 					<classifier>win32</classifier>
 					<type>exe</type>
 					<scope>runtime</scope>
