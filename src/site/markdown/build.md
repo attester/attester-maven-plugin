@@ -52,7 +52,7 @@ where you extracted attester-maven-plugin.
 
 ### Install PhantomJS as a maven artifact
 
-* Download PhantomJS from [here](https://phantomjs.googlecode.com/files/phantomjs-1.9.0-windows.zip), and extract the ``phantomjs.exe``
+* Download PhantomJS from [here](https://bitbucket.org/ariya/phantomjs/downloads), and extract the ``phantomjs.exe``
 file from the zip file in the ``scripts`` sub-directory of the folder where you extracted attester-maven-plugin.
 
 * Execute the ``installPhantomJS.cmd`` script from the same directory.

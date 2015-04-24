@@ -80,7 +80,7 @@ public class RunTests extends RunAttester {
     /**
      * Path to the PhantomJS executable. If not defined, and phantomjsInstances
      * &gt; 0, PhantomJS is used from the the following maven artifact:
-     * <code>com.google.code.phantomjs:phantomjs:1.9.0:exe:win32</code> <br/>
+     * <code>com.google.code.phantomjs:phantomjs:1.9.7:exe:win32</code> <br/>
      * (Passed through <code>--phantomjs-path</code> to <a
      * href="https://github.com/ariatemplates/attester#usage">attester</a>).
      *
@@ -133,7 +133,7 @@ public class RunTests extends RunAttester {
 
     protected void findPhantomjs() {
         if (phantomjsPath == null) {
-            Artifact phantomjsArtifact = new DefaultArtifact("com.google.code.phantomjs", "phantomjs", "1.9.0", "runtime", "exe", "win32",
+            Artifact phantomjsArtifact = new DefaultArtifact("com.google.code.phantomjs", "phantomjs", "1.9.7", "runtime", "exe", "win32",
                     new DefaultArtifactHandler("exe"));
             phantomjsArtifact = session.getLocalRepository().find(phantomjsArtifact);
             phantomjsPath = phantomjsArtifact.getFile();
