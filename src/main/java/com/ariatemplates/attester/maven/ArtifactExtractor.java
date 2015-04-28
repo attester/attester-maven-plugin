@@ -23,7 +23,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
-import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -67,6 +66,15 @@ public class ArtifactExtractor extends AbstractMojo {
      */
     protected MavenProject project;
 
+    /**
+     * Parent directory in which directories containing the extracted artifacts
+     * will be created. If this parameter is not set, the temporary directory
+     * defined in the <code>java.io.tmpdir</code> system property is used.
+     *
+     * @parameter
+     */
+    public File outputParentDirectory;
+
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
             Map<?, ?> context = getPluginContext();
@@ -88,12 +96,18 @@ public class ArtifactExtractor extends AbstractMojo {
     }
 
     public static File getOutputDirectory(Artifact artifact) {
-        File tempDirectory = new File(System.getProperty("java.io.tmpdir"));
+        return getOutputDirectory(artifact, null);
+    }
+
+    public static File getOutputDirectory(Artifact artifact, File parentDirectory) {
+        if (parentDirectory == null) {
+            parentDirectory = new File(System.getProperty("java.io.tmpdir"));
+        }
         String name = artifact.getGroupId() + "-" + artifact.getArtifactId() + "-" + artifact.getVersion() + "-" + artifact.getClassifier();
         if (artifact.isSnapshot()) {
             name += "-" + artifact.getFile().lastModified();
         }
-        File res = new File(tempDirectory, name);
+        File res = new File(parentDirectory, name);
         return res;
     }
 
@@ -102,7 +116,7 @@ public class ArtifactExtractor extends AbstractMojo {
             dependency.getType(), dependency.getClassifier(), new DefaultArtifactHandler("zip"));
         artifact = localRepository.find(artifact);
         File zipFile = artifact.getFile();
-        File outputDirectory = getOutputDirectory(artifact);
+        File outputDirectory = getOutputDirectory(artifact, outputParentDirectory);
         if (outputDirectory.exists()) {
             // if the directory already exists, don't touch it (by the way, it
             // may currently be in use by some other process)

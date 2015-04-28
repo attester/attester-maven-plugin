@@ -230,6 +230,18 @@ public abstract class RunAttester extends RunNode {
     public File attesterPath;
 
     /**
+     * Parent directory in which the directory containing the extracted attester files
+     * will be created, if it does not already exist.
+     * Files are extracted from the following maven artifact:
+     * <code>com.ariatemplates.attester:attester:zip:project</code>
+     *
+     * This parameter is only used if attesterPath is not defined.
+     *
+     * @parameter expression="${project.build.directory}"
+     */
+    public File attesterExtractionParentDirectory;
+
+    /**
      * Port for the internal web server. (Passed through <code>--port</code> to
      * <a href="https://github.com/ariatemplates/attester#usage" >attester</a>)
      *
@@ -266,6 +278,7 @@ public abstract class RunAttester extends RunNode {
                 res = new File(property, pathAfterProperty);
             } else {
                 ArtifactExtractor extractor = new ArtifactExtractor();
+                extractor.outputParentDirectory = attesterExtractionParentDirectory;
                 extractor.setLog(this.getLog());
                 String outputDirectory = extractor.inplaceExtractDependency(session.getLocalRepository(), dependency);
                 res = new File(outputDirectory, pathAfterDependency);
