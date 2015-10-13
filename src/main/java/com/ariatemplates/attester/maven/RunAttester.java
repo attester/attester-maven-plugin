@@ -258,8 +258,8 @@ public abstract class RunAttester extends RunNode {
     public Integer port;
 
     /**
-     * Enables or disables colors. (If false, passes <code>--no-colors</code> to
-     * <a href="https://github.com/ariatemplates/attester#usage" >attester</a>)
+     * Enables or disables colors. (Passes <code>--colors</code> or
+     * <code>--no-colors</code> to <a href="https://github.com/ariatemplates/attester#usage" >attester</a>)
      *
      * @parameter expression="${attester.colors}"
      */
@@ -339,9 +339,7 @@ public abstract class RunAttester extends RunNode {
             res.add(host);
         }
 
-        if (!colors) {
-            res.add("--no-colors");
-        }
+        res.add(colors ? "--colors" : "--no-colors");
 
         if (testSourceDirectory != null && testSourceDirectory.isDirectory()) {
             res.add("--config.resources./");
