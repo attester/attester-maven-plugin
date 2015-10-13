@@ -242,6 +242,14 @@ public abstract class RunAttester extends RunNode {
     public File attesterExtractionParentDirectory;
 
     /**
+     * Host for the internal web server. (Passed through <code>--host</code> to
+     * <a href="https://github.com/ariatemplates/attester#usage" >attester</a>)
+     *
+     * @parameter expression="${attester.host}"
+     */
+    public String host;
+
+    /**
      * Port for the internal web server. (Passed through <code>--port</code> to
      * <a href="https://github.com/ariatemplates/attester#usage" >attester</a>)
      *
@@ -324,6 +332,11 @@ public abstract class RunAttester extends RunNode {
         if (port != null) {
             res.add("--port");
             res.add(port.toString());
+        }
+
+        if (host != null) {
+            res.add("--host");
+            res.add(host);
         }
 
         if (!colors) {
