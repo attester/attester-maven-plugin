@@ -15,11 +15,7 @@
 
 package com.ariatemplates.attester.maven;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
@@ -153,10 +149,10 @@ public class ArtifactExtractor extends AbstractMojo {
     }
 
     public static void unzip(File zipFile, File outputFolder) throws IOException {
-        ZipInputStream zipInputStream = new ZipInputStream(new BufferedInputStream(new FileInputStream(zipFile)));
-
-        ZipEntry entry = null;
+        ZipInputStream zipInputStream = null;
         try {
+            ZipEntry entry = null;
+            zipInputStream = new ZipInputStream(FileUtils.openInputStream(zipFile));
             while ((entry = zipInputStream.getNextEntry()) != null) {
                 File outputFile = new File(outputFolder, entry.getName());
 
@@ -165,22 +161,21 @@ public class ArtifactExtractor extends AbstractMojo {
                     continue;
                 }
 
-                outputFile.getParentFile().mkdirs();
-                OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile));
-
+                OutputStream outputStream = null;
                 try {
-                    try {
-                        IOUtils.copy(zipInputStream, outputStream);
-                    } finally {
-                        outputStream.close();
-                    }
+                    outputStream = FileUtils.openOutputStream(outputFile);
+                    IOUtils.copy(zipInputStream, outputStream);
+                    outputStream.close();
                 } catch (IOException exception) {
                     outputFile.delete();
-                    throw exception;
+                    throw new IOException(exception);
+                } finally {
+                    IOUtils.closeQuietly(outputStream);
                 }
             }
-        } finally {
             zipInputStream.close();
+        } finally {
+            IOUtils.closeQuietly(zipInputStream);
         }
     }
 
