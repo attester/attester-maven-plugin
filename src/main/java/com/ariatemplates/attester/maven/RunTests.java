@@ -88,6 +88,14 @@ public class RunTests extends RunAttester {
      */
     public File phantomjsPath;
 
+    /**
+     * Path to an attester-launcher configuration file. <br/>
+     * (Passed through <code>--launcher-config</code> to <a
+     * href="https://github.com/ariatemplates/attester#usage">attester</a>).
+     * @parameter expression="${attester.launcher.config}"
+     */
+    public File launcherConfig;
+
     protected void testBanner() {
         PrintStream out = System.out;
         out.println("");
@@ -119,14 +127,17 @@ public class RunTests extends RunAttester {
         if (ignoreFailures) {
             list.add("--ignore-failures");
         }
-        if (phantomjsInstances > 0) {
-            findPhantomjs();
-            list.add("--phantomjs-path");
-            list.add(phantomjsPath.getAbsolutePath());
-        }
+        findPhantomjs();
+        list.add("--phantomjs-path");
+        list.add(phantomjsPath.getAbsolutePath());
 
         list.add("--phantomjs-instances");
         list.add(String.valueOf(phantomjsInstances));
+
+        if (launcherConfig != null) {
+            list.add("--launcher-config");
+            list.add(launcherConfig.getAbsolutePath());
+        }
 
         super.addExtraAttesterOptions(list);
     }
