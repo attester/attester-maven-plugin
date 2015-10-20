@@ -125,6 +125,15 @@ public abstract class RunAttester extends RunNode {
     public String[] coverageExcludes;
 
     /**
+     * List of browsers to test. (Passed through <code>--config.browsers</code>
+     * to <a href="https://github.com/ariatemplates/attester#usage"
+     * >attester</a>)
+     *
+     * @parameter
+     */
+    public String[] browsers;
+
+    /**
      * Aria Templates bootstrap file. (Passed through
      * <code>--config.tests.aria-templates.bootstrap</code> to <a
      * href="https://github.com/ariatemplates/attester#usage" >attester</a>)
@@ -381,6 +390,8 @@ public abstract class RunAttester extends RunNode {
 
         res.add("--config.coverage-reports.lcov-file");
         res.add(lcovCoverageReportFile.getAbsolutePath());
+
+        addMultipleOptions(res, "--config.browsers", browsers);
 
         res.add("--config.tests.aria-templates.bootstrap");
         res.add(ariaTemplatesBootstrap);
