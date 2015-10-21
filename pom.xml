@@ -97,8 +97,7 @@
 				<dependency>
 					<groupId>org.nodejs</groupId>
 					<artifactId>node</artifactId>
-					<version>0.10.32</version>
-					<classifier>win32</classifier>
+					<version>4.2.1</version>
 					<type>exe</type>
 					<scope>runtime</scope>
 				</dependency>

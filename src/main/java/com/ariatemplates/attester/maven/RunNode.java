@@ -119,7 +119,7 @@ public class RunNode extends AbstractMojo {
             String osName = System.getProperty("os.name").toLowerCase();
             boolean isWindows = osName.contains("windows");
             if (isWindows) {
-                Artifact nodeArtifact = new DefaultArtifact("org.nodejs", "node", "0.10.32", "runtime", "exe", "win32", new DefaultArtifactHandler("exe"));
+                Artifact nodeArtifact = new DefaultArtifact("org.nodejs", "node", "4.2.1", "runtime", "exe", null, new DefaultArtifactHandler("exe"));
                 nodeArtifact = session.getLocalRepository().find(nodeArtifact);
                 nodejsPath = nodeArtifact.getFile();
             }
