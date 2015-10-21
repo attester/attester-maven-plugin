@@ -107,6 +107,25 @@ public class ArtifactExtractor extends AbstractMojo {
         return res;
     }
 
+    private boolean renameDirectory(File tempDirectory, File outputDirectory) throws InterruptedException {
+        for (int remainingAttempts = 5; remainingAttempts > 0; remainingAttempts--) {
+            if (outputDirectory.exists()) {
+                // the output directory was created in the mean time
+                // (probably by another build running in parallel)
+                getLog().info("Another process probably extracted the artifact at the same time.");
+                return true;
+            } else if (tempDirectory.renameTo(outputDirectory)) {
+                getLog().info("Renaming the folder succeeded!");
+                return true;
+            }
+            // sleep a bit and retry, the failure may be temporary (file opened
+            // by an anti-virus program...)
+            getLog().warn("Renaming the folder failed! Will try again in 250ms...");
+            Thread.sleep(250);
+        }
+        return false;
+    }
+
     public String inplaceExtractDependency(ArtifactRepository localRepository, Dependency dependency) throws Exception {
         Artifact artifact = new DefaultArtifact(dependency.getGroupId(), dependency.getArtifactId(), dependency.getVersion(), dependency.getScope(),
             dependency.getType(), dependency.getClassifier(), new DefaultArtifactHandler("zip"));
@@ -128,11 +147,7 @@ public class ArtifactExtractor extends AbstractMojo {
                                         // (to replace it with a directory)
                 unzip(zipFile, tempDirectory);
                 // Move the temporary directory to its final location
-                if (outputDirectory.exists()) {
-                    // the output directory was created in the mean time
-                    // (probably by another build running in parallel)
-                    getLog().info("Another process probably extracted the artifact at the same time.");
-                } else if (!tempDirectory.renameTo(outputDirectory)) {
+                if (!renameDirectory(tempDirectory, outputDirectory)) {
                     throw new Exception("Failed to rename directory " + tempDirectory + " to " + outputDirectory + ".");
                 }
             } catch (Exception e) {
