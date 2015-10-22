@@ -68,6 +68,16 @@ public class RunNode extends AbstractMojo {
      */
     public File nodejsPath;
 
+    /**
+     * Whether to use the node.js executable from the PATH instead of the one
+     * from the maven repository in case the nodejsPath parameter is not
+     * defined. On non-Windows operating systems, as there is no executable in
+     * the maven repository, this parameter is considered as true.
+     *
+     * @parameter
+     */
+    public boolean systemNodejs;
+
     protected Process nodeProcess;
 
     protected Thread shutdownHook = new Thread(new Runnable() {
@@ -105,16 +115,20 @@ public class RunNode extends AbstractMojo {
     }
 
     protected void findNodeExecutable() {
-        if (nodejsPath == null) {
-            Artifact nodeArtifact = new DefaultArtifact("org.nodejs", "node", "0.10.32", "runtime", "exe", "win32", new DefaultArtifactHandler("exe"));
-            nodeArtifact = session.getLocalRepository().find(nodeArtifact);
-            nodejsPath = nodeArtifact.getFile();
+        if (nodejsPath == null && !systemNodejs) {
+            String osName = System.getProperty("os.name").toLowerCase();
+            boolean isWindows = osName.contains("windows");
+            if (isWindows) {
+                Artifact nodeArtifact = new DefaultArtifact("org.nodejs", "node", "0.10.32", "runtime", "exe", "win32", new DefaultArtifactHandler("exe"));
+                nodeArtifact = session.getLocalRepository().find(nodeArtifact);
+                nodejsPath = nodeArtifact.getFile();
+            }
         }
     }
 
     protected void createNodeProcess() {
         findNodeExecutable();
-        String nodeExecutable = nodejsPath.getAbsolutePath();
+        String nodeExecutable = nodejsPath != null ? nodejsPath.getAbsolutePath() : "node";
         List<String> nodeArguments = getNodeArguments();
         nodeArguments.add(0, nodeExecutable);
         getLog().info(String.format("Starting node.js: %s", nodeArguments.toString()));

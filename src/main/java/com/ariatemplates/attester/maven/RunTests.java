@@ -89,6 +89,16 @@ public class RunTests extends RunAttester {
     public File phantomjsPath;
 
     /**
+     * Whether to use the PhantomJS executable from the PATH instead of the one
+     * from the maven repository in case the phantomjsPath parameter is not
+     * defined. On non-Windows operating systems, as there is no executable in
+     * the maven repository, this parameter is considered as true.
+     *
+     * @parameter
+     */
+    public boolean systemPhantomjs;
+
+    /**
      * Path to an attester-launcher configuration file. <br/>
      * (Passed through <code>--launcher-config</code> to <a
      * href="https://github.com/ariatemplates/attester#usage">attester</a>).
@@ -128,8 +138,10 @@ public class RunTests extends RunAttester {
             list.add("--ignore-failures");
         }
         findPhantomjs();
-        list.add("--phantomjs-path");
-        list.add(phantomjsPath.getAbsolutePath());
+        if (phantomjsPath != null) {
+            list.add("--phantomjs-path");
+            list.add(phantomjsPath.getAbsolutePath());
+        }
 
         list.add("--phantomjs-instances");
         list.add(String.valueOf(phantomjsInstances));
@@ -143,11 +155,15 @@ public class RunTests extends RunAttester {
     }
 
     protected void findPhantomjs() {
-        if (phantomjsPath == null) {
-            Artifact phantomjsArtifact = new DefaultArtifact("com.google.code.phantomjs", "phantomjs", "1.9.7", "runtime", "exe", "win32",
-                    new DefaultArtifactHandler("exe"));
-            phantomjsArtifact = session.getLocalRepository().find(phantomjsArtifact);
-            phantomjsPath = phantomjsArtifact.getFile();
+        if (phantomjsPath == null && !systemPhantomjs) {
+            String osName = System.getProperty("os.name").toLowerCase();
+            boolean isWindows = osName.contains("windows");
+            if (isWindows) {
+                Artifact phantomjsArtifact = new DefaultArtifact("com.google.code.phantomjs", "phantomjs", "1.9.7", "runtime", "exe", "win32",
+                        new DefaultArtifactHandler("exe"));
+                phantomjsArtifact = session.getLocalRepository().find(phantomjsArtifact);
+                phantomjsPath = phantomjsArtifact.getFile();
+            }
         }
     }
 }
