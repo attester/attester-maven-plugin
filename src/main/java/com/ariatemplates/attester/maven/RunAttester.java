@@ -251,6 +251,38 @@ public abstract class RunAttester extends RunNode {
     public File attesterExtractionParentDirectory;
 
     /**
+     * When this option is set to true (which is now the default), attester will
+     * extract attester files directly in the final folder without the need to
+     * rename it. It is the recommended value when extracting attester files
+     * in a private location of the current build (such as the target directory,
+     * see the attesterExtractionParentDirectory parameter).
+     *
+     * Setting this option to false restores the previous behavior, which was to
+     * first create a temporary folder, then to extract attester files in it and finally to
+     * rename the folder to its final name.
+     *
+     * This previous behavior was designed to allow setting a shared folder in the
+     * attesterExtractionParentDirectory parameter: if multiple builds run concurrently,
+     * if they find an existing folder with the final name, they could directly use it and
+     * know that the extraction was complete (because renaming the folder happens at the end of
+     * the extraction). Otherwise, they would each try to extract attester files in their own
+     * temporary folder, and then only one build would successfully rename its temporary folder and all
+     * other builds would detect the final folder at the end of their temporary extraction and
+     * they would use the final folder and erase their temporary folder.
+     *
+     * However, in some setups, it was noticed that the renameTo function can randomly fail for
+     * non-obvious reasons (maybe because the folder is locked by an anti-virus program while checking
+     * the newly extracted files). So, to keep a safe and consistent behavior, it is recommended
+     * to keep the default values for the avoidRenamingAttesterExtractionDirectory and
+     * attesterExtractionParentDirectory parameters.
+     *
+     * This parameter is only used if attesterPath is not defined.
+     *
+     * @parameter expression="${attester.avoidRenamingAttesterExtractionDirectory}"
+     */
+    public boolean avoidRenamingAttesterExtractionDirectory = true;
+
+    /**
      * Host for the internal web server. (Passed through <code>--host</code> to
      * <a href="https://github.com/ariatemplates/attester#usage" >attester</a>)
      *
@@ -296,6 +328,7 @@ public abstract class RunAttester extends RunNode {
             } else {
                 ArtifactExtractor extractor = new ArtifactExtractor();
                 extractor.outputParentDirectory = attesterExtractionParentDirectory;
+                extractor.avoidRenamingTargetDirectory = avoidRenamingAttesterExtractionDirectory;
                 extractor.setLog(this.getLog());
                 String outputDirectory = extractor.inplaceExtractDependency(session.getLocalRepository(), dependency);
                 res = new File(outputDirectory, pathAfterDependency);

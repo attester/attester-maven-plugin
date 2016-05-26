@@ -71,6 +71,15 @@ public class ArtifactExtractor extends AbstractMojo {
      */
     public File outputParentDirectory;
 
+    /**
+     * If set to true, files will be extracted directly in their final destination folder.
+     * Otherwise, a temporary folder will first be created, then files will be extracted inside
+     * that folder, and, finally, the folder will be renamed.
+     *
+     * @parameter
+     */
+    public boolean avoidRenamingTargetDirectory;
+
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
             Map<?, ?> context = getPluginContext();
@@ -108,7 +117,7 @@ public class ArtifactExtractor extends AbstractMojo {
     }
 
     private boolean renameDirectory(File tempDirectory, File outputDirectory) throws InterruptedException {
-        for (int remainingAttempts = 5; remainingAttempts > 0; remainingAttempts--) {
+        for (int remainingAttempts = 20; remainingAttempts > 0; remainingAttempts--) {
             if (outputDirectory.exists()) {
                 // the output directory was created in the mean time
                 // (probably by another build running in parallel)
@@ -140,15 +149,19 @@ public class ArtifactExtractor extends AbstractMojo {
             getLog().info("Extracting artifact " + artifact + " to " + outputDirectory);
             File tempDirectory = null;
             try {
-                // temporary directory where to extract
-                tempDirectory = File.createTempFile("extract", null, outputDirectory.getParentFile());
-                tempDirectory.delete(); // delete the file created by
-                                        // createTempFile
-                                        // (to replace it with a directory)
-                unzip(zipFile, tempDirectory);
-                // Move the temporary directory to its final location
-                if (!renameDirectory(tempDirectory, outputDirectory)) {
-                    throw new Exception("Failed to rename directory " + tempDirectory + " to " + outputDirectory + ".");
+                if (avoidRenamingTargetDirectory) {
+                    unzip(zipFile, outputDirectory);
+                } else {
+                    // temporary directory where to extract
+                    tempDirectory = File.createTempFile("extract", null, outputDirectory.getParentFile());
+                    tempDirectory.delete(); // delete the file created by
+                                            // createTempFile
+                                            // (to replace it with a directory)
+                    unzip(zipFile, tempDirectory);
+                    // Move the temporary directory to its final location
+                    if (!renameDirectory(tempDirectory, outputDirectory)) {
+                        throw new Exception("Failed to rename directory " + tempDirectory + " to " + outputDirectory + ".");
+                    }
                 }
             } catch (Exception e) {
                 getLog().error("An exception occurred while extracting the " + artifact + " artifact.", e);
